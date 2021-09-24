@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layerDiagram dslVersion="1.0.0.0" Id="bfc94f7e-ad93-4844-a197-4406d8128212" absoluteBounds="0, 0, 11, 8.5" name="DependencyValidation1">
+  <layerModelMoniker Id="b3779e83-d4d6-449f-a4ea-33afc9a9189b" />
+  <nestedChildShapes>
+    <layerShape Id="7dc2e3ac-b2e4-49da-a5aa-e8eb84f39246" absoluteBounds="4.875, 3.125, 2, 0.75" customColor="161, 199, 231">
+      <layerMoniker Id="18d6323e-875a-44f2-a9a2-a9f8103e3c84" />
+    </layerShape>
+    <layerShape Id="6ef02a14-8975-46c9-990d-4e063d4fe991" absoluteBounds="4.875, 1.875, 2, 0.75" customColor="161, 199, 231">
+      <layerMoniker Id="382313d5-2a5c-425e-8a65-27cfe689b692" />
+    </layerShape>
+  </nestedChildShapes>
+</layerDiagram>

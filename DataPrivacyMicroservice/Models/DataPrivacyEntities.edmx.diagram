@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="110abe08952f49b58283dd769140c70a" Name="Diagram1">
+        <EntityTypeShape EntityType="DataPrivacyModel.Actor" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataPrivacyModel.ActorRole" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataPrivacyModel.ActorRolePersonalDataField" Width="1.5" PointX="5.25" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataPrivacyModel.ActorRolePurpose" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataPrivacyModel.Permission" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataPrivacyModel.PersonalData" Width="1.5" PointX="3" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataPrivacyModel.PersonalDataField" Width="1.5" PointX="3" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataPrivacyModel.Purpose" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataPrivacyModel.Role" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataPrivacyModel.RolePermation" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataPrivacyModel.PersonalDataActorRole" Width="1.5" PointX="5.25" PointY="9.5" IsExpanded="true" />
+        <AssociationConnector Association="DataPrivacyModel.FK_ActorRole_ActorRole" ManuallyRouted="false" />
+        <AssociationConnector Association="DataPrivacyModel.FK_ActorRole_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="DataPrivacyModel.FK_ActorRoleMetadata_ActorRole" ManuallyRouted="false" />
+        <AssociationConnector Association="DataPrivacyModel.FK_ActorRolePurpose_ActorRole" ManuallyRouted="false" />
+        <AssociationConnector Association="DataPrivacyModel.FK_PrivacyDataSystemActorRole_ActorRole" ManuallyRouted="false" />
+        <AssociationConnector Association="DataPrivacyModel.FK_ActorRoleMetadata_Metadata" ManuallyRouted="false" />
+        <AssociationConnector Association="DataPrivacyModel.FK_ActorRolePurpose_Purpose" ManuallyRouted="false" />
+        <AssociationConnector Association="DataPrivacyModel.FK_RolePermation_Permission" ManuallyRouted="false" />
+        <AssociationConnector Association="DataPrivacyModel.FK_PrivacyDataMetadataPuroseActorRole_PrivacyData" ManuallyRouted="false" />
+        <AssociationConnector Association="DataPrivacyModel.FK_RolePermation_Role" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DataPrivacyModel.AuditLog" Width="1.5" PointX="7.375" PointY="4.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

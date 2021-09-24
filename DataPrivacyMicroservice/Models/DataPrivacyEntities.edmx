@@ -1,0 +1,762 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DataPrivacyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Actor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" />
+          <Property Name="password" Type="nvarchar" MaxLength="10" />
+          <Property Name="note" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="ActorRole">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="actorID" Type="int" Nullable="false" />
+          <Property Name="roleID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActorRolePersonalDataFields">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="actorRoleID" Type="int" Nullable="false" />
+          <Property Name="personalDataFieldID" Type="int" Nullable="false" />
+          <Property Name="note" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="ActorRolePurpose">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="actorIRoleD" Type="int" Nullable="false" />
+          <Property Name="purposeID" Type="int" Nullable="false" />
+          <Property Name="note" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="AuditLog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="eventType" Type="nvarchar" MaxLength="100" />
+          <Property Name="tableName" Type="nvarchar" MaxLength="100" />
+          <Property Name="recordID" Type="nvarchar" MaxLength="100" />
+          <Property Name="columnName" Type="nvarchar" MaxLength="100" />
+          <Property Name="originalValue" Type="nvarchar" MaxLength="200" />
+          <Property Name="newValue" Type="nvarchar" MaxLength="200" />
+          <Property Name="createdBy" Type="nvarchar" MaxLength="300" />
+          <Property Name="createdDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="description" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="PersonalData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="firstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="middleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="lastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="emailAddress" Type="nvarchar" MaxLength="50" />
+          <Property Name="dateOfBirth" Type="date" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="15" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DataPrivacy.dbo.PersonalDataActorRole' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PersonalDataActorRole">
+          <Key>
+            <PropertyRef Name="personalDataID" />
+            <PropertyRef Name="actorRoleID" />
+          </Key>
+          <Property Name="personalDataID" Type="int" Nullable="false" />
+          <Property Name="actorRoleID" Type="int" Nullable="false" />
+          <Property Name="validForStartDateTime" Type="datetime" />
+          <Property Name="validForEndDateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PersonalDataFields">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dataFieldName" Type="nvarchar" MaxLength="100" />
+          <Property Name="description" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Purpose">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="description" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="description" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="RolePermation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="roleID" Type="int" Nullable="false" />
+          <Property Name="permationID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ActorRole_ActorRole">
+          <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+          <End Role="ActorRole" Type="Self.ActorRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Actor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActorRole">
+              <PropertyRef Name="actorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActorRole_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="ActorRole" Type="Self.ActorRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActorRole">
+              <PropertyRef Name="roleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActorRoleMetadata_ActorRole">
+          <End Role="ActorRole" Type="Self.ActorRole" Multiplicity="1" />
+          <End Role="ActorRolePersonalDataFields" Type="Self.ActorRolePersonalDataFields" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActorRole">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActorRolePersonalDataFields">
+              <PropertyRef Name="actorRoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActorRoleMetadata_Metadata">
+          <End Role="PersonalDataFields" Type="Self.PersonalDataFields" Multiplicity="1" />
+          <End Role="ActorRolePersonalDataFields" Type="Self.ActorRolePersonalDataFields" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalDataFields">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActorRolePersonalDataFields">
+              <PropertyRef Name="personalDataFieldID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActorRolePurpose_ActorRole">
+          <End Role="ActorRole" Type="Self.ActorRole" Multiplicity="1" />
+          <End Role="ActorRolePurpose" Type="Self.ActorRolePurpose" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActorRole">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActorRolePurpose">
+              <PropertyRef Name="actorIRoleD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActorRolePurpose_Purpose">
+          <End Role="Purpose" Type="Self.Purpose" Multiplicity="1" />
+          <End Role="ActorRolePurpose" Type="Self.ActorRolePurpose" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Purpose">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActorRolePurpose">
+              <PropertyRef Name="purposeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrivacyDataMetadataPuroseActorRole_PrivacyData">
+          <End Role="PersonalData" Type="Self.PersonalData" Multiplicity="1" />
+          <End Role="PersonalDataActorRole" Type="Self.PersonalDataActorRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalData">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PersonalDataActorRole">
+              <PropertyRef Name="personalDataID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrivacyDataSystemActorRole_ActorRole">
+          <End Role="ActorRole" Type="Self.ActorRole" Multiplicity="1" />
+          <End Role="PersonalDataActorRole" Type="Self.PersonalDataActorRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActorRole">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PersonalDataActorRole">
+              <PropertyRef Name="actorRoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RolePermation_Permission">
+          <End Role="Permission" Type="Self.Permission" Multiplicity="1" />
+          <End Role="RolePermation" Type="Self.RolePermation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permission">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="RolePermation">
+              <PropertyRef Name="permationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RolePermation_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="RolePermation" Type="Self.RolePermation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="RolePermation">
+              <PropertyRef Name="roleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DataPrivacyModelStoreContainer">
+          <EntitySet Name="Actor" EntityType="Self.Actor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActorRole" EntityType="Self.ActorRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActorRolePersonalDataFields" EntityType="Self.ActorRolePersonalDataFields" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActorRolePurpose" EntityType="Self.ActorRolePurpose" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AuditLog" EntityType="Self.AuditLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permission" EntityType="Self.Permission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonalData" EntityType="Self.PersonalData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonalDataFields" EntityType="Self.PersonalDataFields" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Purpose" EntityType="Self.Purpose" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RolePermation" EntityType="Self.RolePermation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonalDataActorRole" EntityType="Self.PersonalDataActorRole" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PersonalDataActorRole].[personalDataID] AS [personalDataID], 
+    [PersonalDataActorRole].[actorRoleID] AS [actorRoleID], 
+    [PersonalDataActorRole].[validForStartDateTime] AS [validForStartDateTime], 
+    [PersonalDataActorRole].[validForEndDateTime] AS [validForEndDateTime]
+    FROM [dbo].[PersonalDataActorRole] AS [PersonalDataActorRole]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ActorRole_ActorRole" Association="Self.FK_ActorRole_ActorRole">
+            <End Role="Actor" EntitySet="Actor" />
+            <End Role="ActorRole" EntitySet="ActorRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActorRole_Role" Association="Self.FK_ActorRole_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="ActorRole" EntitySet="ActorRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActorRoleMetadata_ActorRole" Association="Self.FK_ActorRoleMetadata_ActorRole">
+            <End Role="ActorRole" EntitySet="ActorRole" />
+            <End Role="ActorRolePersonalDataFields" EntitySet="ActorRolePersonalDataFields" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActorRoleMetadata_Metadata" Association="Self.FK_ActorRoleMetadata_Metadata">
+            <End Role="PersonalDataFields" EntitySet="PersonalDataFields" />
+            <End Role="ActorRolePersonalDataFields" EntitySet="ActorRolePersonalDataFields" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActorRolePurpose_ActorRole" Association="Self.FK_ActorRolePurpose_ActorRole">
+            <End Role="ActorRole" EntitySet="ActorRole" />
+            <End Role="ActorRolePurpose" EntitySet="ActorRolePurpose" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActorRolePurpose_Purpose" Association="Self.FK_ActorRolePurpose_Purpose">
+            <End Role="Purpose" EntitySet="Purpose" />
+            <End Role="ActorRolePurpose" EntitySet="ActorRolePurpose" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrivacyDataMetadataPuroseActorRole_PrivacyData" Association="Self.FK_PrivacyDataMetadataPuroseActorRole_PrivacyData">
+            <End Role="PersonalData" EntitySet="PersonalData" />
+            <End Role="PersonalDataActorRole" EntitySet="PersonalDataActorRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrivacyDataSystemActorRole_ActorRole" Association="Self.FK_PrivacyDataSystemActorRole_ActorRole">
+            <End Role="ActorRole" EntitySet="ActorRole" />
+            <End Role="PersonalDataActorRole" EntitySet="PersonalDataActorRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RolePermation_Permission" Association="Self.FK_RolePermation_Permission">
+            <End Role="Permission" EntitySet="Permission" />
+            <End Role="RolePermation" EntitySet="RolePermation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RolePermation_Role" Association="Self.FK_RolePermation_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RolePermation" EntitySet="RolePermation" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DataPrivacyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Actor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="note" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ActorRoles" Relationship="Self.FK_ActorRole_ActorRole" FromRole="Actor" ToRole="ActorRole" />
+        </EntityType>
+        <EntityType Name="ActorRole">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="actorID" Type="Int32" Nullable="false" />
+          <Property Name="roleID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Actor" Relationship="Self.FK_ActorRole_ActorRole" FromRole="ActorRole" ToRole="Actor" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_ActorRole_Role" FromRole="ActorRole" ToRole="Role" />
+          <NavigationProperty Name="ActorRolePersonalDataFields" Relationship="Self.FK_ActorRoleMetadata_ActorRole" FromRole="ActorRole" ToRole="ActorRolePersonalDataFields" />
+          <NavigationProperty Name="ActorRolePurposes" Relationship="Self.FK_ActorRolePurpose_ActorRole" FromRole="ActorRole" ToRole="ActorRolePurpose" />
+          <NavigationProperty Name="PersonalDataActorRoles" Relationship="Self.FK_PrivacyDataSystemActorRole_ActorRole" FromRole="ActorRole" ToRole="PersonalDataActorRole" />
+        </EntityType>
+        <EntityType Name="ActorRolePersonalDataField">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="actorRoleID" Type="Int32" Nullable="false" />
+          <Property Name="personalDataFieldID" Type="Int32" Nullable="false" />
+          <Property Name="note" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ActorRole" Relationship="Self.FK_ActorRoleMetadata_ActorRole" FromRole="ActorRolePersonalDataFields" ToRole="ActorRole" />
+          <NavigationProperty Name="PersonalDataField" Relationship="Self.FK_ActorRoleMetadata_Metadata" FromRole="ActorRolePersonalDataFields" ToRole="PersonalDataFields" />
+        </EntityType>
+        <EntityType Name="ActorRolePurpose">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="actorIRoleD" Type="Int32" Nullable="false" />
+          <Property Name="purposeID" Type="Int32" Nullable="false" />
+          <Property Name="note" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ActorRole" Relationship="Self.FK_ActorRolePurpose_ActorRole" FromRole="ActorRolePurpose" ToRole="ActorRole" />
+          <NavigationProperty Name="Purpose" Relationship="Self.FK_ActorRolePurpose_Purpose" FromRole="ActorRolePurpose" ToRole="Purpose" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="RolePermations" Relationship="Self.FK_RolePermation_Permission" FromRole="Permission" ToRole="RolePermation" />
+        </EntityType>
+        <EntityType Name="PersonalData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="firstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="middleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="emailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="mobile" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PersonalDataActorRoles" Relationship="Self.FK_PrivacyDataMetadataPuroseActorRole_PrivacyData" FromRole="PersonalData" ToRole="PersonalDataActorRole" />
+        </EntityType>
+        <EntityType Name="PersonalDataField">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dataFieldName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ActorRolePersonalDataFields" Relationship="Self.FK_ActorRoleMetadata_Metadata" FromRole="PersonalDataFields" ToRole="ActorRolePersonalDataFields" />
+        </EntityType>
+        <EntityType Name="Purpose">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ActorRolePurposes" Relationship="Self.FK_ActorRolePurpose_Purpose" FromRole="Purpose" ToRole="ActorRolePurpose" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ActorRoles" Relationship="Self.FK_ActorRole_Role" FromRole="Role" ToRole="ActorRole" />
+          <NavigationProperty Name="RolePermations" Relationship="Self.FK_RolePermation_Role" FromRole="Role" ToRole="RolePermation" />
+        </EntityType>
+        <EntityType Name="RolePermation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="roleID" Type="Int32" Nullable="false" />
+          <Property Name="permationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Permission" Relationship="Self.FK_RolePermation_Permission" FromRole="RolePermation" ToRole="Permission" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_RolePermation_Role" FromRole="RolePermation" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="PersonalDataActorRole">
+          <Key>
+            <PropertyRef Name="personalDataID" />
+            <PropertyRef Name="actorRoleID" />
+          </Key>
+          <Property Name="personalDataID" Type="Int32" Nullable="false" />
+          <Property Name="actorRoleID" Type="Int32" Nullable="false" />
+          <Property Name="validForStartDateTime" Type="DateTime" Precision="3" />
+          <Property Name="validForEndDateTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ActorRole" Relationship="Self.FK_PrivacyDataSystemActorRole_ActorRole" FromRole="PersonalDataActorRole" ToRole="ActorRole" />
+          <NavigationProperty Name="PersonalData" Relationship="Self.FK_PrivacyDataMetadataPuroseActorRole_PrivacyData" FromRole="PersonalDataActorRole" ToRole="PersonalData" />
+        </EntityType>
+        <Association Name="FK_ActorRole_ActorRole">
+          <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+          <End Role="ActorRole" Type="Self.ActorRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Actor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActorRole">
+              <PropertyRef Name="actorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActorRole_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="ActorRole" Type="Self.ActorRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActorRole">
+              <PropertyRef Name="roleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActorRoleMetadata_ActorRole">
+          <End Role="ActorRole" Type="Self.ActorRole" Multiplicity="1" />
+          <End Role="ActorRolePersonalDataFields" Type="Self.ActorRolePersonalDataField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActorRole">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActorRolePersonalDataFields">
+              <PropertyRef Name="actorRoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActorRolePurpose_ActorRole">
+          <End Role="ActorRole" Type="Self.ActorRole" Multiplicity="1" />
+          <End Role="ActorRolePurpose" Type="Self.ActorRolePurpose" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActorRole">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActorRolePurpose">
+              <PropertyRef Name="actorIRoleD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrivacyDataSystemActorRole_ActorRole">
+          <End Role="ActorRole" Type="Self.ActorRole" Multiplicity="1" />
+          <End Role="PersonalDataActorRole" Type="Self.PersonalDataActorRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActorRole">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PersonalDataActorRole">
+              <PropertyRef Name="actorRoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActorRoleMetadata_Metadata">
+          <End Role="PersonalDataFields" Type="Self.PersonalDataField" Multiplicity="1" />
+          <End Role="ActorRolePersonalDataFields" Type="Self.ActorRolePersonalDataField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalDataFields">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActorRolePersonalDataFields">
+              <PropertyRef Name="personalDataFieldID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActorRolePurpose_Purpose">
+          <End Role="Purpose" Type="Self.Purpose" Multiplicity="1" />
+          <End Role="ActorRolePurpose" Type="Self.ActorRolePurpose" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Purpose">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActorRolePurpose">
+              <PropertyRef Name="purposeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RolePermation_Permission">
+          <End Role="Permission" Type="Self.Permission" Multiplicity="1" />
+          <End Role="RolePermation" Type="Self.RolePermation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permission">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="RolePermation">
+              <PropertyRef Name="permationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrivacyDataMetadataPuroseActorRole_PrivacyData">
+          <End Role="PersonalData" Type="Self.PersonalData" Multiplicity="1" />
+          <End Role="PersonalDataActorRole" Type="Self.PersonalDataActorRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalData">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PersonalDataActorRole">
+              <PropertyRef Name="personalDataID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RolePermation_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="RolePermation" Type="Self.RolePermation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="RolePermation">
+              <PropertyRef Name="roleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DataPrivacyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Actors" EntityType="Self.Actor" />
+          <EntitySet Name="ActorRoles" EntityType="Self.ActorRole" />
+          <EntitySet Name="ActorRolePersonalDataFields" EntityType="Self.ActorRolePersonalDataField" />
+          <EntitySet Name="ActorRolePurposes" EntityType="Self.ActorRolePurpose" />
+          <EntitySet Name="Permissions" EntityType="Self.Permission" />
+          <EntitySet Name="PersonalDatas" EntityType="Self.PersonalData" />
+          <EntitySet Name="PersonalDataFields" EntityType="Self.PersonalDataField" />
+          <EntitySet Name="Purposes" EntityType="Self.Purpose" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="RolePermations" EntityType="Self.RolePermation" />
+          <EntitySet Name="PersonalDataActorRoles" EntityType="Self.PersonalDataActorRole" />
+          <AssociationSet Name="FK_ActorRole_ActorRole" Association="Self.FK_ActorRole_ActorRole">
+            <End Role="Actor" EntitySet="Actors" />
+            <End Role="ActorRole" EntitySet="ActorRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActorRole_Role" Association="Self.FK_ActorRole_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="ActorRole" EntitySet="ActorRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActorRoleMetadata_ActorRole" Association="Self.FK_ActorRoleMetadata_ActorRole">
+            <End Role="ActorRole" EntitySet="ActorRoles" />
+            <End Role="ActorRolePersonalDataFields" EntitySet="ActorRolePersonalDataFields" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActorRolePurpose_ActorRole" Association="Self.FK_ActorRolePurpose_ActorRole">
+            <End Role="ActorRole" EntitySet="ActorRoles" />
+            <End Role="ActorRolePurpose" EntitySet="ActorRolePurposes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrivacyDataSystemActorRole_ActorRole" Association="Self.FK_PrivacyDataSystemActorRole_ActorRole">
+            <End Role="ActorRole" EntitySet="ActorRoles" />
+            <End Role="PersonalDataActorRole" EntitySet="PersonalDataActorRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActorRoleMetadata_Metadata" Association="Self.FK_ActorRoleMetadata_Metadata">
+            <End Role="PersonalDataFields" EntitySet="PersonalDataFields" />
+            <End Role="ActorRolePersonalDataFields" EntitySet="ActorRolePersonalDataFields" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActorRolePurpose_Purpose" Association="Self.FK_ActorRolePurpose_Purpose">
+            <End Role="Purpose" EntitySet="Purposes" />
+            <End Role="ActorRolePurpose" EntitySet="ActorRolePurposes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RolePermation_Permission" Association="Self.FK_RolePermation_Permission">
+            <End Role="Permission" EntitySet="Permissions" />
+            <End Role="RolePermation" EntitySet="RolePermations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrivacyDataMetadataPuroseActorRole_PrivacyData" Association="Self.FK_PrivacyDataMetadataPuroseActorRole_PrivacyData">
+            <End Role="PersonalData" EntitySet="PersonalDatas" />
+            <End Role="PersonalDataActorRole" EntitySet="PersonalDataActorRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RolePermation_Role" Association="Self.FK_RolePermation_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="RolePermation" EntitySet="RolePermations" />
+          </AssociationSet>
+          <EntitySet Name="AuditLogs" EntityType="DataPrivacyModel.AuditLog" />
+        </EntityContainer>
+        <EntityType Name="AuditLog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="eventType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="tableName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="recordID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="columnName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="originalValue" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="newValue" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="createdBy" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="createdDate" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DataPrivacyModelStoreContainer" CdmEntityContainer="DataPrivacyEntities">
+          <EntitySetMapping Name="Actors">
+            <EntityTypeMapping TypeName="DataPrivacyModel.Actor">
+              <MappingFragment StoreEntitySet="Actor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="note" ColumnName="note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActorRoles">
+            <EntityTypeMapping TypeName="DataPrivacyModel.ActorRole">
+              <MappingFragment StoreEntitySet="ActorRole">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="actorID" ColumnName="actorID" />
+                <ScalarProperty Name="roleID" ColumnName="roleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActorRolePersonalDataFields">
+            <EntityTypeMapping TypeName="DataPrivacyModel.ActorRolePersonalDataField">
+              <MappingFragment StoreEntitySet="ActorRolePersonalDataFields">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="actorRoleID" ColumnName="actorRoleID" />
+                <ScalarProperty Name="personalDataFieldID" ColumnName="personalDataFieldID" />
+                <ScalarProperty Name="note" ColumnName="note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActorRolePurposes">
+            <EntityTypeMapping TypeName="DataPrivacyModel.ActorRolePurpose">
+              <MappingFragment StoreEntitySet="ActorRolePurpose">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="actorIRoleD" ColumnName="actorIRoleD" />
+                <ScalarProperty Name="purposeID" ColumnName="purposeID" />
+                <ScalarProperty Name="note" ColumnName="note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="DataPrivacyModel.Permission">
+              <MappingFragment StoreEntitySet="Permission">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonalDatas">
+            <EntityTypeMapping TypeName="DataPrivacyModel.PersonalData">
+              <MappingFragment StoreEntitySet="PersonalData">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="middleName" ColumnName="middleName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="dateOfBirth" ColumnName="dateOfBirth" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonalDataFields">
+            <EntityTypeMapping TypeName="DataPrivacyModel.PersonalDataField">
+              <MappingFragment StoreEntitySet="PersonalDataFields">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="dataFieldName" ColumnName="dataFieldName" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Purposes">
+            <EntityTypeMapping TypeName="DataPrivacyModel.Purpose">
+              <MappingFragment StoreEntitySet="Purpose">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="DataPrivacyModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RolePermations">
+            <EntityTypeMapping TypeName="DataPrivacyModel.RolePermation">
+              <MappingFragment StoreEntitySet="RolePermation">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="roleID" ColumnName="roleID" />
+                <ScalarProperty Name="permationID" ColumnName="permationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonalDataActorRoles">
+            <EntityTypeMapping TypeName="DataPrivacyModel.PersonalDataActorRole">
+              <MappingFragment StoreEntitySet="PersonalDataActorRole">
+                <ScalarProperty Name="personalDataID" ColumnName="personalDataID" />
+                <ScalarProperty Name="actorRoleID" ColumnName="actorRoleID" />
+                <ScalarProperty Name="validForStartDateTime" ColumnName="validForStartDateTime" />
+                <ScalarProperty Name="validForEndDateTime" ColumnName="validForEndDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AuditLogs">
+            <EntityTypeMapping TypeName="DataPrivacyModel.AuditLog">
+              <MappingFragment StoreEntitySet="AuditLog">
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="newValue" ColumnName="newValue" />
+                <ScalarProperty Name="originalValue" ColumnName="originalValue" />
+                <ScalarProperty Name="columnName" ColumnName="columnName" />
+                <ScalarProperty Name="recordID" ColumnName="recordID" />
+                <ScalarProperty Name="tableName" ColumnName="tableName" />
+                <ScalarProperty Name="eventType" ColumnName="eventType" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
