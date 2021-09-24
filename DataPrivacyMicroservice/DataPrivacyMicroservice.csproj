@@ -215,6 +215,10 @@
     <Compile Include="DataPrivacyManagementLayer\Authorization\ActorDetails.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\PRIVACY2.mdf" />
+    <Content Include="App_Data\PRIVACY2_log.ldf">
+      <DependentUpon>PRIVACY2.mdf</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Models\DataPrivacyEntities.Context.tt">
@@ -261,9 +265,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
